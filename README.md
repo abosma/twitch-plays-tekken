@@ -4,7 +4,7 @@ A Twitch Plays Pokemon clone for the game Tekken 7.
 
 Currently only supports the character Paul.
 
-Built using C# with the package InputSimulatorPlus to simulate move inputs.
+Built using C# with the packages TwitchLib for twitch chat reading, and InputSimulatorPlus to simulate move inputs.
 
 ## Quick info
 
