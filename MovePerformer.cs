@@ -11,6 +11,11 @@ namespace TwitchPlaysGames
     {
         private static readonly InputSimulator InputSimulator = new InputSimulator();
 
+        /// <summary>
+        /// Performs the list of virtualkeycodes given.
+        /// The moves get pressed down at the same time, and released at the same time. (ex: [1,2] will press 1+2 at the same time)
+        /// </summary>
+        /// <param name="toInputKeys"></param>
         public static void PerformMoves(List<VirtualKeyCode[]> toInputKeys)
         {
             foreach (var InputKey in toInputKeys)

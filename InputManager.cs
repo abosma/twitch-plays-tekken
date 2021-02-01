@@ -9,6 +9,7 @@ namespace TwitchPlaysGames
     {
         private readonly Dictionary<string, VirtualKeyCode[]> _inputDictionary = new Dictionary<string, VirtualKeyCode[]>();
 
+        // TODO: Check if an array of vkc's is needed or not. currently think it is to support moves like df or 1+2.
         public InputManager()
         {
             _inputDictionary.Add("df", new[] { VirtualKeyCode.DOWN, VirtualKeyCode.RIGHT });
@@ -32,8 +33,15 @@ namespace TwitchPlaysGames
             _inputDictionary.Add("accept", new[] { VirtualKeyCode.VK_Z });
             _inputDictionary.Add("decline", new[] { VirtualKeyCode.VK_X });
             _inputDictionary.Add("ra", new[] { VirtualKeyCode.VK_Z });
+            _inputDictionary.Add("start", new []{ VirtualKeyCode.RSHIFT });
         }
 
+        /// <summary>
+        /// Returns a list of virtualkeycodes per input string.
+        /// It returns a list to support moves that press multiple keys at the same time (ex: 1+2)
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns>Returns a list of VirtualKeyCodes</returns>
         public List<VirtualKeyCode[]> GetKeyCode(string input)
         {
             var DictionaryKeys = _inputDictionary.Keys.ToList();

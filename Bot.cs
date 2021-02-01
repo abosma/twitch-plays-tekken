@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using WindowsInput;
 using TwitchLib.Client;
 using TwitchLib.Client.Events;
 using TwitchLib.Client.Models;
-using TwitchLib.Communication.Clients;
-using TwitchLib.Communication.Models;
 
 namespace TwitchPlaysGames
 {
@@ -58,7 +55,7 @@ namespace TwitchPlaysGames
 
             if (ChatMessage.Equals("!controls") || ChatMessage.Equals("!help"))
             {
-                _client.SendMessage(e.ChatMessage.Channel, $"Hello {e.ChatMessage.Username}, you can find the instructions here: https://discordjs.moe/XHNxi37OQT.png");
+                _client.SendMessage(e.ChatMessage.Channel, $"Hello {e.ChatMessage.Username}, you can find the instructions here: https://discordjs.moe/q31bQ9m3xx.png");
                 return;
             }
             
@@ -79,7 +76,6 @@ namespace TwitchPlaysGames
 
             if (InputList.Count > 5)
             {
-                _client.SendMessage(e.ChatMessage.Channel, $"Sorry {e.ChatMessage.Username}, you put in {InputList.Count} inputs. There's a maximum of 5 per message.");
                 return;
             }
 
@@ -93,9 +89,16 @@ namespace TwitchPlaysGames
             }
         }
 
+        /// <summary>
+        /// First attempts to perform special moves, if it does and it still has a remaining input, perform the rest of the input.
+        /// If it doesn't, just throw the input at MovePerformer.
+        /// </summary>
+        /// <param name="inputList"></param>
         private void HandleInputs(List<string> inputList)
         {
-            foreach(var Input in inputList)
+            MoveWriter.WriteMoveIfValid(inputList);
+
+            foreach (var Input in inputList)
             {
                 var ToPerformInput = Input.Trim();
                 var ToAttemptRemainingKeys = _specialManagerPaul.AttemptSpecial(ToPerformInput, _inputSimulator, _inputManager);

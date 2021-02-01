@@ -9,28 +9,39 @@ namespace TwitchPlaysGames
 {
     class SpecialManagerPaul
     {
-        /// TODO: Add ki-charging, ssu (sidestep up), ssd (sidestep down), and some auto-combos (combo1 does like df2, b1,2, demoman)
+        /// TODO: Add SWU (sidewalk up) and SWD (sidewalk down). Also add ducking. Probably ducks for 30 frames (501 frames) so people can duck attacks.
         public List<string> SpeciaList = new List<string>
         {
+            "unblockable",
             "combo1",
             "combo2",
             "combo3",
             "rageart",
-            "ra",
             "rage drive",
-            "rd",
             "deathfist",
             "demoman",
             "cds",
             "qcf",
             "qcb",
             "kbd",
-            "n",
             "ki",
             "ssu",
-            "ssd"
+            "ssd",
+            "start",
+            "n",
+            "ra",
+            "rd",
         };
 
+        /// <summary>
+        /// Attempts to perform a special move if the input is part of the list above.
+        /// Certain specials also include normal moves (ex: qcf2), in that case the remaining part of the string is returned and given to the MovePerformer.
+        /// These are hardcoded values and timings. No way to do it dynamically.
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="inputSimulator"></param>
+        /// <param name="inputManager"></param>
+        /// <returns>Returns the remaining input when appropiate, else returns an empty string.</returns>
         public string AttemptSpecial(string input, InputSimulator inputSimulator, InputManager inputManager)
         {
             string RemainingInput = "";
@@ -62,11 +73,42 @@ namespace TwitchPlaysGames
                 }
             }
 
+            if (ToPerformSpecial.Equals("start"))
+            {
+                var StartInput = inputManager.GetKeyCode("start");
+
+                inputSimulator.Keyboard.KeyDown(StartInput[0][0]);
+                inputSimulator.Keyboard.Sleep(16);
+                inputSimulator.Keyboard.KeyUp(StartInput[0][0]);
+
+                return "";
+            }
+
             if (ToPerformSpecial.Equals("n"))
             {
                 Thread.Sleep(16);
 
                 return RemainingInput;
+            }
+
+            if (ToPerformSpecial.Equals("unblockable"))
+            {
+                inputSimulator.Keyboard.KeyDown(BackInput[0][0]);
+                inputSimulator.Keyboard.Sleep(16);
+                inputSimulator.Keyboard.KeyUp(BackInput[0][0]);
+                inputSimulator.Keyboard.Sleep(16);
+                inputSimulator.Keyboard.KeyDown(BackInput[0][0]);
+                inputSimulator.Keyboard.Sleep(16);
+                inputSimulator.Keyboard.KeyUp(BackInput[0][0]);
+                inputSimulator.Keyboard.KeyDown(BackInput[0][0]);
+                inputSimulator.Keyboard.KeyDown(LPInput[0][0]);
+                inputSimulator.Keyboard.KeyDown(RPInput[0][0]);
+                inputSimulator.Keyboard.Sleep(16);
+                inputSimulator.Keyboard.KeyUp(BackInput[0][0]);
+                inputSimulator.Keyboard.KeyUp(LPInput[0][0]);
+                inputSimulator.Keyboard.KeyUp(RPInput[0][0]);
+
+                return "";
             }
 
             if (ToPerformSpecial.Equals("ki"))
